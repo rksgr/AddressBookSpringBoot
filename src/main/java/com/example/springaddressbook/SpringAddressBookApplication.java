@@ -9,12 +9,14 @@ import org.springframework.context.ApplicationContext;
 @Slf4j
 public class SpringAddressBookApplication {
 
-    /**UC3 : Determine the logging levels, logging to console or file logging patterns etc based on this application running
-     * in Development, staging or production **/
+    /**UC4 : Database setting as environment variable **/
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(SpringAddressBookApplication.class, args);
 
         // Logging the environment from appropriate application property
         log.info("Address Book App started in {} environment",context.getEnvironment().getProperty("environment"));
+
+        //Log the data source username
+        log.info("Address book DB user is {}", context.getEnvironment().getProperty("spring.datasource.username"));
     }
 }
