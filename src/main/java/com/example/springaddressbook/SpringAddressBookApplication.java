@@ -15,6 +15,6 @@ public class SpringAddressBookApplication {
         ApplicationContext context = SpringApplication.run(SpringAddressBookApplication.class, args);
 
         // Logging the environment from appropriate application property
-        log.info("Employee Payroll App started in {} environment",context.getEnvironment().getProperty("environment"));
+        log.info("Address Book App started in {} environment",context.getEnvironment().getProperty("environment"));
     }
 }
