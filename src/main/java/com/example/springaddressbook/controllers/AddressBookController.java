@@ -2,7 +2,6 @@ package com.example.springaddressbook.controllers;
 
 import com.example.springaddressbook.DTO.AddressBookDTO;
 import com.example.springaddressbook.DTO.ResponseDTO;
-import com.example.springaddressbook.model.AddressBookData;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
