@@ -4,6 +4,7 @@ import lombok.Data;
 
 /** UC 1: Use lombok library to auto generate getters and setters for the DTO */
 public @Data class AddressBookDTO {
+
     public String name;
     public String city;
 
