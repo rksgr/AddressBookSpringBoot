@@ -10,6 +10,10 @@ public interface IAddressBookService{
 
     List<AddressBookData> getAddressBookData();
 
+    List<AddressBookData> getAddressBookDataByCity(String city);
+
+    List<AddressBookData> getAddressBookDataByState(String state);
+
     AddressBookData createAddressBookData(AddressBookDTO addressBookDTO);
 
     AddressBookData updateAddressBookData(AddressBookDTO addressBookDTO, String name) throws
