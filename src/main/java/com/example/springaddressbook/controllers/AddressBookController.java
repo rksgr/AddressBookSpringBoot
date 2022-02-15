@@ -2,18 +2,28 @@ package com.example.springaddressbook.controllers;
 
 import com.example.springaddressbook.DTO.AddressBookDTO;
 import com.example.springaddressbook.DTO.ResponseDTO;
+import com.example.springaddressbook.model.AddressBookData;
+import com.example.springaddressbook.service.IAddressBookService;
+import com.example.springaddressbook.service.AddressBookService;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import java.util.List;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/addressbookservice")
+@Slf4j
 public class AddressBookController {
 
+    //Inject the services layer
+    @Autowired
+    private IAddressBookService iAddressBookService;
 
-    /** UC 2: Rest Controller to demonstrate various HTTP methods*/
     /**
      * Method: To get the details of ALL the persons from Address Book
      *                  Performs RETRIEVE operation
@@ -22,8 +32,9 @@ public class AddressBookController {
      */
     @RequestMapping(value ={"","/","/get"})
     public ResponseEntity<ResponseDTO> getAddressBookData(){
-        AddressBookDTO addressBookDTO = new AddressBookDTO("Arun","Ranchi");
-        ResponseDTO respDTO = new ResponseDTO(" Fetched Address Book Data: ", addressBookDTO);
+        List<AddressBookData> addressBookList = null;
+        addressBookList = iAddressBookService.getAddressBookData();
+        ResponseDTO respDTO = new ResponseDTO(" Fetched Address Book Data: ", addressBookList);
         return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
     }
     /**
@@ -34,7 +45,9 @@ public class AddressBookController {
      */
     @PostMapping(value ={"/create"})
     public ResponseEntity<ResponseDTO> addAddressBookData(@Valid @RequestBody AddressBookDTO addressBookDTO){
-        ResponseDTO respDTO = new ResponseDTO("Created Address Book Data: ", addressBookDTO);
+        AddressBookData addressBookData = null;
+        addressBookData = iAddressBookService.createAddressBookData(addressBookDTO);
+        ResponseDTO respDTO = new ResponseDTO("Created Address Book Data: ", addressBookData);
         return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
     }
 
@@ -44,10 +57,13 @@ public class AddressBookController {
      *
      * @return A JSON Response containing address details of the person updated
      */
+    @SneakyThrows
     @PutMapping("/update/{name}")
     public ResponseEntity<ResponseDTO> updateAddressBookData(@RequestBody AddressBookDTO addressBookDTO,
                                                              @PathVariable ("name") String name){
-        ResponseDTO respDTO = new ResponseDTO(" Updated Address Book Data of: " +name, addressBookDTO);
+        AddressBookData addressBookData = null;
+        addressBookData = iAddressBookService.updateAddressBookData(addressBookDTO,name);
+        ResponseDTO respDTO = new ResponseDTO(" Updated Address Book Data of: " +name, addressBookData);
         return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
     }
 
@@ -59,7 +75,16 @@ public class AddressBookController {
      */
     @DeleteMapping("/delete/{name}")
     public ResponseEntity<ResponseDTO> deleteAddressBookData(@PathVariable("name") String name){
-        ResponseDTO respDTO = new ResponseDTO(" Deleted Address Book Data of: "+ name, name);
+        boolean personFound = iAddressBookService.deleteAddressBookData(name);
+        ResponseDTO respDTO = null;
+        if(personFound){
+            respDTO = new ResponseDTO(" Deleted Address Book Data of: "+ name, name);
+        }else if(!personFound){
+            respDTO = new ResponseDTO("Sorry! The person with name "+ name + " not found in the address book.", name);
+        }
         return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
     }
 }
+
+
+
