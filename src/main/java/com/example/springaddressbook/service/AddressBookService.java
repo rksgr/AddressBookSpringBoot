@@ -17,6 +17,31 @@ public class AddressBookService implements IAddressBookService{
 
     public List<AddressBookData> getAddressBookData(){  return addressBookDataList; }
 
+    // Fetch the details of persons living in a city
+    public List<AddressBookData> getAddressBookDataByCity(String city){
+        List<AddressBookData> addressBookDataByCity = new ArrayList<>();
+        for(int i=0;i<addressBookDataList.size();i++){
+            if (addressBookDataList.get(i).getCity().equals(city)){
+                AddressBookData addressBookDataCity = addressBookDataList.get(i);
+                addressBookDataByCity.add(addressBookDataCity);
+            }
+        }
+        return addressBookDataByCity;
+    }
+
+    // Fetch the details of persons living in a state
+    public List<AddressBookData> getAddressBookDataByState(String state){
+        List<AddressBookData> addressBookDataByState = new ArrayList<>();
+        for(int i=0;i<addressBookDataList.size();i++){
+            if (addressBookDataList.get(i).getState().equals(state)){
+                AddressBookData addressBookDataState = addressBookDataList.get(i);
+                addressBookDataByState.add(addressBookDataState);
+            }
+        }
+        return addressBookDataByState;
+    }
+
+    // create a new address book data
     public AddressBookData createAddressBookData(AddressBookDTO addressBookDTO){
         AddressBookData addressBookData = null;
         addressBookData = new AddressBookData(addressBookDTO);
@@ -35,7 +60,12 @@ public class AddressBookService implements IAddressBookService{
 
                 // Using BeanUtils to set the name and city fields
                 PropertyUtils.setSimpleProperty(addressBookData,"name",addressBookDTO.name);
+                PropertyUtils.setSimpleProperty(addressBookData,"address",addressBookDTO.getAddress());
                 PropertyUtils.setSimpleProperty(addressBookData,"city",addressBookDTO.city);
+                PropertyUtils.setSimpleProperty(addressBookData,"state",addressBookDTO.state);
+                PropertyUtils.setSimpleProperty(addressBookData,"zip",addressBookDTO.zip);
+                PropertyUtils.setSimpleProperty(addressBookData,"emailId",addressBookDTO.getEmailId());
+                PropertyUtils.setSimpleProperty(addressBookData,"phoneNo",addressBookDTO.getPhoneNo());
                 addressBookDataList.set(i,addressBookData);
             }
         }
