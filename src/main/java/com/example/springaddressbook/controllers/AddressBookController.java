@@ -37,6 +37,45 @@ public class AddressBookController {
         ResponseDTO respDTO = new ResponseDTO(" Fetched Address Book Data: ", addressBookList);
         return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
     }
+
+    /**
+     * Method: To get the details of ALL the persons living in a city from Address Book
+     *                  Performs RETRIEVE operation
+     *
+     * @return A JSON Response containing address details of all the persons living in a city
+     */
+    @RequestMapping(value ={"/get/{city}"})
+    public ResponseEntity<ResponseDTO> getAddressBookDataByCity(@PathVariable("city") String city){
+        List<AddressBookData> addressBookListByCity = null;
+        ResponseDTO respDTO = new ResponseDTO(" ", null);
+        addressBookListByCity = iAddressBookService.getAddressBookDataByCity(city);
+        if(addressBookListByCity.size() != 0){
+            respDTO = new ResponseDTO(" List of persons living in city of " +city+ " : ", addressBookListByCity);
+        }else if(addressBookListByCity.size() == 0){
+            respDTO = new ResponseDTO("Sorry! The address book has no data of persons living in the city of " +city+ "  ",city);
+        }
+        return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
+    }
+
+    /**
+     * Method: To get the details of ALL the persons living in a city from Address Book
+     *                  Performs RETRIEVE operation
+     *
+     * @return A JSON Response containing address details of all the persons living in a city
+     */
+    @RequestMapping(value ={"/get/{state}"})
+    public ResponseEntity<ResponseDTO> getAddressBookDataByState(@PathVariable("state") String state){
+        List<AddressBookData> addressBookListByState = null;
+        ResponseDTO respDTO = new ResponseDTO(" ", null);
+        addressBookListByState = iAddressBookService.getAddressBookDataByState(state);
+        if(addressBookListByState.size() != 0){
+            respDTO = new ResponseDTO(" List of persons living in city of " +state+ " : ", addressBookListByState);
+        }else if(addressBookListByState.size() == 0){
+            respDTO = new ResponseDTO("Sorry! The address book has no data of persons living in the city of "
+                                    +state+ "  ",state);
+        }
+        return new ResponseEntity<ResponseDTO>(respDTO, HttpStatus.OK);
+    }
     /**
      * Method: To add the details of a new person to the Address Book
      *                  Performs CREATE operation
